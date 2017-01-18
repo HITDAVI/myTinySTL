@@ -18,5 +18,19 @@
     <ClInclude Include="myList.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="TypeTraits.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Alloc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
