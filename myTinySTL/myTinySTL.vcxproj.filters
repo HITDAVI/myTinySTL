@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="myList.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="TypeTraits.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -27,9 +24,18 @@
     <ClInclude Include="Alloc.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Construct.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Iterator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Alloc.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -80,10 +80,12 @@
   <ItemGroup>
     <ClInclude Include="Alloc.h" />
     <ClInclude Include="Allocator.h" />
-    <ClInclude Include="myList.h" />
+    <ClInclude Include="Construct.h" />
+    <ClInclude Include="Iterator.h" />
     <ClInclude Include="TypeTraits.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Alloc.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
