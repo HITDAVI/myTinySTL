@@ -48,11 +48,98 @@ namespace myTinySTL{
 		p = allocate(new_sz);
 		return p;
 	}
-
+	
 	void * alloc::refill(size_t n){
 		int nobjs = 20;
-		//尝试取得nobjs个区块作为freelist的新节点
-		char * chunk = chunk_alloc(n, nobjs);
-		//
+		char *chunk = chunk_alloc(n, nobjs);
+		//1.获得一个块
+		if (nobjs == 1)
+		{
+			return chunk;
+		}
+		//2.第一块给客端,其余用free-list串接
+		obj *result = (obj*)chunk;
+		obj *next_obj = (obj*)(chunk + n);
+		obj *current_obj = next_obj;
+		free_list[FREELIST_INDEX(n)] = current_obj;
+		for (int i = 2; i <= nobjs; ++i)
+		{
+			if (i == nobjs)
+			{
+				current_obj->next_free_list = 0;
+				break;
+			}
+			else
+			{
+				next_obj = (obj*)((char*)(next_obj)+n);
+				current_obj->next_free_list = next_obj;
+				current_obj = next_obj;
+			}
+		}
+		return result;
+	}
+
+	char *alloc::chunk_alloc(size_t size, int &nobjs)
+	{
+		char *result;
+		size_t total_bytes = size*nobjs;         //请求总大小
+		size_t bytes_left = end_free - start_free; //内存池中剩余空间大小
+
+		//1.>=所需内存
+		if (bytes_left >= total_bytes)
+		{
+			result = start_free;
+			start_free += total_bytes;
+			return result;
+		}
+		//2.>=一个块
+		else if (bytes_left >= size)
+		{
+			nobjs = bytes_left / size;
+			total_bytes = nobjs*size;
+			result = start_free;
+			start_free += total_bytes;
+			return result;
+		}
+		//3.内存池连一个块的大小都无法提供
+		else
+		{
+			//将剩余的内存池空间分配给free-list
+			if (bytes_left>0)
+			{
+				int index = FREELIST_INDEX(bytes_left);
+				((obj*)(start_free))->next_free_list = free_list[index];
+				free_list[index] = (obj*)(start_free);
+			}
+			//重新为内存池申请新内存
+			size_t bytes_to_get = 2 * total_bytes + ROUND_UP(heap_size >> 4);
+			start_free = static_cast<char*>(malloc(bytes_to_get));
+			//重新申请失败
+			if (start_free == 0)
+			{
+				//从free-list中查看是否有满足条件的空间
+				for (int i = size; i <= _MAX_BYTES; i += -_ALIGN)
+				{
+					int index = FREELIST_INDEX(i);
+					if (free_list[index] != 0)
+					{
+						start_free = (char*)(free_list[index]);
+						free_list[index] = free_list[index]->next_free_list;
+						end_free = start_free + i;
+						return chunk_alloc(size, nobjs);
+					}
+				}
+				end_free = 0;
+				return nullptr;
+			}
+			//重新申请成功
+			else
+			{
+				heap_size += bytes_to_get;
+				end_free = start_free + bytes_to_get;
+				return chunk_alloc(size, nobjs);
+			}
+		}
+
 	}
 }

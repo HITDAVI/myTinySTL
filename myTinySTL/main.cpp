@@ -1,4 +1,3 @@
-#include "jjalloc.h"
 #include <vector>
 #include <iostream>
 
@@ -20,7 +19,7 @@ int main(){
 	unsigned int i;
 	vector<int, JJ::allocator<int> > iv(ia, ia + 4);
 	for (i = 0; i < iv.size(); i++)
-		cout << iv[i] << " ";
+	cout << iv[i] << " ";
 	cout << endl;
 	*/
 	MyIter<int> ite(new int(8));

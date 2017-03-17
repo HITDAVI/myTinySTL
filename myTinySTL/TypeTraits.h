@@ -5,7 +5,7 @@ namespace myTinySTL{
 	struct _true_type{ };
 	struct _false_type{ };
 
-	//特性萃取 特例化样本 萃取的是型别的特性，区别于iterator的特性
+	//特性萃取 特例化样本 萃取的是型别的特性，区别于iterator的特性，本文件属于typetraits
 	template<class _Tp>
 	struct _type_traits{
 		typedef _false_type	   has_trivial_default_constructor; //默认构造
@@ -15,6 +15,7 @@ namespace myTinySTL{
 		typedef _false_type    is_POD_type;
 	};
 
+	//空<>表示我们将为所有的模板参数提供实参，这是全特化？
 	template<>
 	struct _type_traits<bool> {
 		typedef _true_type    has_trivial_default_constructor;
